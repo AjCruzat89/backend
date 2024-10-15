@@ -104,7 +104,8 @@ exports.getPending = async (req, res) => {
                         }
                     }
                 ]
-            }
+            },
+            order: [['updatedAt', 'ASC']]
         });
         return res.status(200).json({ results });
     } catch (err) {
@@ -125,7 +126,8 @@ exports.getQueues = async (req, res) => {
                         }
                     }
                 ]
-            }
+            },
+            order: [['updatedAt', 'ASC']]
         });
 
         return res.status(200).json({ results });

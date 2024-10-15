@@ -48,7 +48,7 @@ exports.currentWindow = async (req, res) => {
                 status: 'pending',
                 [literal('DATE(createdAt)')]: literal('CURDATE()')
             },
-            order: [['createdAt', 'DESC']]
+            order: [['updatedAt', 'ASC']]
         });
         return res.status(200).json({ result });
     } catch (err) {
@@ -112,4 +112,37 @@ exports.finishQueue = async (req, res) => {
         res.status(500).json({ error: err });
     }
 }
+//<!--===============================================================================================-->
+exports.getPending = async (req, res) => {
+    try {
+        const windowStatus = await Window.findOne({
+            where: {
+                window: req.staffWindow
+            },
+            attributes: ['status']
+        })
+
+        if (windowStatus.dataValues.status !== 'open') {
+            return res.status(400).json({ error: 'Window is not open' });
+        }
+
+        const results = await Queue.findAll({
+            where: {
+                [Op.and]: [
+                    literal('DATE(`Queue`.`createdAt`) = CURDATE()'),
+                    { status: 'pending' },
+                    {
+                        window: {
+                            [Op.is]: null 
+                        }
+                    }
+                ]
+            },
+            order: [['updatedAt', 'ASC']]
+        });
+        return res.status(200).json({ results });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 //<!--===============================================================================================-->

@@ -72,6 +72,7 @@ exports.editWindow = async (req, res) => {
         }
         const updatedWindow = await window.update(req.body);
         req.io.emit('refreshDatas');
+        req.io.emit('refreshQueue');
         res.status(200).json({ message: 'Window updated successfully', updatedWindow });
     }
     catch (err) {

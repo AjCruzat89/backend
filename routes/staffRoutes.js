@@ -8,6 +8,7 @@ router.get('/get-window-names', staffController.ensureStaff, staffController.get
 router.post('/update-queue', staffController.ensureStaff, staffController.updateQueue);
 router.post('/transfer-window', staffController.ensureStaff, staffController.transferWindow);
 router.post('/finish-queue', staffController.ensureStaff, staffController.finishQueue);
+router.get('/get-pending', staffController.ensureStaff, staffController.getPending);
 //<!--===============================================================================================-->
 module.exports = router
 //<!--===============================================================================================-->
