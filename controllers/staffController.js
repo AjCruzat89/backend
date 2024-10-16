@@ -78,7 +78,7 @@ exports.updateQueue = async (req, res) => {
     try{
         const result = await Queue.findByPk(req.body.id);
         result.window = req.staffWindow;
-        result.save();
+        await result.save();
         req.io.emit('refreshQueue');
         res.status(200).json({ result });
     }
@@ -91,7 +91,7 @@ exports.transferWindow = async (req, res) => {
     try{
         const result = await Queue.findByPk(req.body.id);
         result.window = req.body.window.length > 0 ? req.body.window : null;
-        result.save();
+        await result.save();
         req.io.emit('refreshQueue');
         res.status(200).json({ result });
     }
