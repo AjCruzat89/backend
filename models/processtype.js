@@ -30,9 +30,6 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Process type cannot be empty'
         }
       },
-      unique: {
-        msg: 'Process type already exists'
-      }
     },
     coding: {
       type: DataTypes.STRING,
@@ -41,9 +38,6 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Coding cannot be empty'
         }
       },
-      unique: {
-        msg: 'Coding already exists'
-      }
     },
     description: {
       type: DataTypes.STRING,

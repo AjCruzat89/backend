@@ -104,7 +104,7 @@ exports.finishQueue = async (req, res) => {
     try{
         const result = await Queue.findByPk(req.body.id);
         result.status = 'finished';
-        result.save();
+        await result.save();
         req.io.emit('refreshQueue');
         res.status(200).json({ result });
     }

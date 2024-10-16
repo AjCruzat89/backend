@@ -22,12 +22,10 @@ module.exports = {
       process_type: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       coding: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       description: {
         type: Sequelize.STRING,
