@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Window, { foreignKey: 'window', targetKey: 'window' });
+      this.hasMany(models.Transaction, { foreignKey: 'transaction_id', sourceKey: 'id' });
     }
   }
   Queue.init({

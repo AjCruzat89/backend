@@ -1,7 +1,7 @@
 //<!--===============================================================================================-->
 const { Op, fn, col, literal, where } = require("sequelize");
 const db = require('../models');
-const { User, Window, ProcessType, Queue } = db;
+const { User, Window, ProcessType, Queue, Transaction } = db;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'capstone_jwt';
@@ -145,4 +145,60 @@ exports.getPending = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+//<!--===============================================================================================-->
+exports.getTransactionsById = async (req, res) => {
+    try {
+        const results = await Transaction.findAll({
+            include: [{
+                model: Queue,
+                attributes: []
+            }],
+            where: {
+                [Op.and]: [
+                    {
+                        transaction_id: req.params.id
+                    }
+                ]
+            }
+        });
+        return res.status(200).json({ results });
+    }
+    catch(err) {
+        res.status(500).json({ error: err });
+    }
+}
+//<!--===============================================================================================-->
+exports.addTransaction = async (req, res) => {
+    try{
+        const result = await Transaction.create({
+            transaction_id : req.body.id,
+            amount: req.body.amount,
+            description: req.body.description
+        });
+        req.io.emit('refreshQueue');
+        res.status(200).json({ result });
+    }
+    catch(err){
+        if (err.errors) {
+            res.status(500).json({ error: err.errors.map(e => e.message) });
+        } else {
+            res.status(500).json({ error: err });
+        }
+    }
+}
+//<!--===============================================================================================-->
+exports.deleteTransaction = async (req, res) => {
+    try{
+        const result = await Transaction.destroy({
+            where: {
+                id : req.body.id
+            }
+        });
+        req.io.emit('refreshQueue');
+        res.status(200).json({ result });
+    }
+    catch(err){
+        res.status(500).json({ error: err });
+    }
+}
 //<!--===============================================================================================-->

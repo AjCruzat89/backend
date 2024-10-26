@@ -9,6 +9,9 @@ router.post('/update-queue', staffController.ensureStaff, staffController.update
 router.post('/transfer-window', staffController.ensureStaff, staffController.transferWindow);
 router.post('/finish-queue', staffController.ensureStaff, staffController.finishQueue);
 router.get('/get-pending', staffController.ensureStaff, staffController.getPending);
+router.get('/get-transactions-by-id/:id', staffController.ensureStaff, staffController.getTransactionsById);
+router.post('/add-transaction', staffController.ensureStaff, staffController.addTransaction);
+router.post('/delete-transaction', staffController.ensureStaff, staffController.deleteTransaction);
 //<!--===============================================================================================-->
 module.exports = router
 //<!--===============================================================================================-->
