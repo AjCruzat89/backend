@@ -17,6 +17,7 @@ router.get('/get-users', adminController.ensureAdmin, adminController.getUsers);
 router.post('/edit-user', adminController.ensureAdmin, adminController.editUser);
 router.post('/delete-user', adminController.ensureAdmin, adminController.deleteUser);
 router.post('/create-user', adminController.ensureAdmin, adminController.createUser);
+router.get('/get-transactions', adminController.ensureAdmin, adminController.getTransactions);
 //<!--===============================================================================================-->
 module.exports = router
 //<!--===============================================================================================-->

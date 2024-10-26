@@ -1,7 +1,7 @@
 //<!--===============================================================================================-->
 const { Op, fn, col, literal, where } = require("sequelize");
 const db = require('../models');
-const { User, Window, ProcessType } = db;
+const { User, Window, ProcessType, Transaction } = db;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'capstone_jwt';
@@ -249,6 +249,16 @@ exports.getWindowNames = async (req, res) => {
             attributes: ['window']
         });
         res.status(200).json({ windows });
+    }
+    catch(err){
+        res.status(500).json({ error: err });
+    }
+}
+//<!--===============================================================================================-->x
+exports.getTransactions = async (req, res) => {
+    try{
+        const results= await Transaction.findAll();
+        res.status(200).json({ results });
     }
     catch(err){
         res.status(500).json({ error: err });
