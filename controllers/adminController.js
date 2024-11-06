@@ -256,12 +256,53 @@ exports.getWindowNames = async (req, res) => {
 }
 //<!--===============================================================================================-->x
 exports.getTransactions = async (req, res) => {
-    try{
-        const results= await Transaction.findAll();
-        res.status(200).json({ results });
+    try {
+        const daily = await Transaction.findAll({
+            attributes: [
+                [fn('DATE', col('createdAt')), 'date'], 
+                [fn('SUM', col('amount')), 'daily_total']           
+            ],
+            group: [fn('DATE', col('createdAt'))],            
+            order: [[fn('DATE', col('createdAt')), 'ASC']]
+        });
+
+        const weekly = await Transaction.findAll({
+            attributes: [
+                [fn('YEAR', col('createdAt')), 'year'],
+                [fn('WEEK', col('createdAt'), 1), 'week'],
+                [fn('SUM', col('amount')), 'weekly_total']
+            ],
+            group: ['year', 'week'],
+            order: [
+                [fn('YEAR', col('createdAt')), 'ASC'],
+                [fn('WEEK', col('createdAt'), 1), 'ASC']
+            ]
+        });
+        
+        const monthly = await Transaction.findAll({
+            attributes: [
+                [fn('YEAR', col('createdAt')), 'year'],         
+                [fn('MONTH', col('createdAt')), 'month'],       
+                [fn('SUM', col('amount')), 'monthly_total'] 
+            ],
+            group: ['year', 'month'],                     
+            order: [[fn('YEAR', col('createdAt')), 'ASC'], [fn('MONTH', col('createdAt')), 'ASC']]
+        });
+
+        const yearly = await Transaction.findAll({
+            attributes: [
+                [fn('YEAR', col('createdAt')), 'year'],      
+                [fn('SUM', col('amount')), 'yearly_total']     
+            ],
+            group: ['year'],                                  
+            order: [[fn('YEAR', col('createdAt')), 'ASC']]
+        });
+
+        const transactions = await Transaction.findAll();
+
+        res.status(200).json({ daily, weekly, monthly, yearly, transactions });
+    } catch (err) {
+        res.status(500).json({ error: err.message });  
     }
-    catch(err){
-        res.status(500).json({ error: err });
-    }
-}
+};
 //<!--===============================================================================================-->x

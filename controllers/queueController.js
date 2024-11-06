@@ -79,6 +79,7 @@ exports.createQueueNumber = async (req, res) => {
         if (existingQueueToday){
             return res.status(400).json({ error: 'Queue number already exists' });
         }
+
         const result = await Queue.create({
             queue_number: req.body.queue_number,
             process: req.body.process,
@@ -96,7 +97,7 @@ exports.getPending = async (req, res) => {
         const results = await Queue.findAll({
             where: {
                 [Op.and]: [
-                    literal('DATE(createdAt) = CURDATE()'),
+                    literal("DATE(CONVERT_TZ(createdAt, '+00:00', '+08:00')) = CURDATE()"),
                     { status: 'pending' },
                     {
                         window: {
