@@ -7,10 +7,12 @@ const PORT = 3000;
 //<!--===============================================================================================-->
 const app = express();
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'OPTIONS'],  
+    allowedHeaders: ['Content-Type'],
+    credentials: true 
 }));
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //<!--===============================================================================================-->
