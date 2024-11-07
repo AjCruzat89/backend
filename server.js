@@ -12,7 +12,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type'],
     credentials: true 
 }));
-app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //<!--===============================================================================================-->
@@ -42,6 +41,7 @@ app.use('/staff', require('./routes/staffRoutes'));
 app.get('/test', (req, res) => {
     res.send('TEST')
 })
+app.options('*', cors());
 //<!--===============================================================================================-->
 const db = require('./models');
 db.sequelize.authenticate()
