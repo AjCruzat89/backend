@@ -33,27 +33,11 @@ exports.ensureAdmin = async (req, res, next) => {
         next();
     });
 }
-exports.adminStats = async (req, res) => {
-    try{
-        const userCount = await User.count({
-            where: {
-                role: {
-                    [Op.ne]: 'admin' 
-                }
-            }
-        });
-        const windowCount = await Window.count();
-        return res.status(200).json({ userCount, windowCount });    
-    }
-    catch(err){
-        res.status(500).json({ error: err });
-    }
-}
 //<!--===============================================================================================-->
 exports.createWindow = async (req, res) => {
     try {
         const newWindow = await Window.create(req.body);
-        res.status(200).json({ message: 'Window created successfully', newWindow });
+        res.status(200).json({ message: 'Window created successfully' });
     }
     catch (err) {
         res.status(500).json({ error: err.errors.map(e => e.message) });
@@ -73,7 +57,7 @@ exports.editWindow = async (req, res) => {
         const updatedWindow = await window.update(req.body);
         req.io.emit('refreshDatas');
         req.io.emit('refreshQueue');
-        res.status(200).json({ message: 'Window updated successfully', updatedWindow });
+        res.status(200).json({ message: 'Window updated successfully' });
     }
     catch (err) {
         if (err.errors) {
@@ -130,7 +114,7 @@ exports.createProcessType = async (req, res) => {
     try{ 
         const newProcessType = await ProcessType.create(req.body);
         req.io.emit('refreshDatas');
-        res.status(200).json({ message: 'Process type created successfully', newProcessType });
+        res.status(200).json({ message: 'Process type created successfully' });
     }
     catch(err){
         if (err.errors) {
@@ -153,7 +137,7 @@ exports.editProcessType = async (req, res) => {
         }
         const updatedProcessType = await processType.update(req.body);
         req.io.emit('refreshDatas');
-        res.status(200).json({ message: 'Process type updated successfully', updatedProcessType });
+        res.status(200).json({ message: 'Process type updated successfully' });
     }
     catch (err) {
         if (err.errors) {
@@ -197,7 +181,7 @@ exports.getUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
     try{
         const newUser = await User.create(req.body);
-        res.status(200).json({ message: 'User created successfully', newUser });
+        res.status(200).json({ message: 'User created successfully' });
     }
     catch(err){
         if (err.errors) {
@@ -219,9 +203,31 @@ exports.editUser = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
         const updatedUser = await user.update(req.body);
-        res.status(200).json({ message: 'User updated successfully', updatedUser });
+        res.status(200).json({ message: 'User updated successfully' });
     }
     catch (err) {
+        if (err.errors) {
+            res.status(500).json({ error: err.errors.map(e => e.message) });
+        } else {
+            res.status(500).json({ error: err });
+        }
+    }
+}
+//<!--===============================================================================================-->x
+exports.updateUserPassword = async (req, res) => {
+    try{
+        const user = await User.findOne({
+            where: {
+                id: req.body.id
+            }
+        });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        const updatedUser = await user.update(req.body);
+        res.status(200).json({ message: 'User password updated successfully' });
+    }
+    catch(err){
         if (err.errors) {
             res.status(500).json({ error: err.errors.map(e => e.message) });
         } else {

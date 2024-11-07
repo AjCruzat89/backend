@@ -10,7 +10,7 @@ const blacklist = require('./blacklist');
 exports.register = async (req, res) => {
     try{
         const newUser = await User.create(req.body);
-        res.status(200).json({ message: 'User created successfully', newUser });
+        res.status(200).json({ message: 'User created successfully' });
     }
     catch(err){
         res.status(500).json({ error: err.errors.map(e => e.message) });
