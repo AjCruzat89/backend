@@ -12,6 +12,12 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: false
 }));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //<!--===============================================================================================-->
@@ -41,7 +47,6 @@ app.use('/staff', require('./routes/staffRoutes'));
 app.get('/test', (req, res) => {
     res.send('TEST')
 })
-app.options('*', cors());
 //<!--===============================================================================================-->
 const db = require('./models');
 db.sequelize.authenticate()
