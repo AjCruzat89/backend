@@ -33,6 +33,9 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
 app.use('/queue', require('./routes/queueRoutes'));
 app.use('/staff', require('./routes/staffRoutes'));
+app.get('/test', (req, res) => {
+    res.send('TEST')
+})
 //<!--===============================================================================================-->
 const db = require('./models');
 db.sequelize.authenticate()
