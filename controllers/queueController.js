@@ -97,7 +97,7 @@ exports.getPending = async (req, res) => {
         const results = await Queue.findAll({
             where: {
                 [Op.and]: [
-                    literal("DATE(CONVERT_TZ(createdAt, '+00:00', '+08:00')) = CURDATE()"),
+                    literal('DATE(`Queue`.`createdAt`) = CURDATE()'),
                     { status: 'pending' },
                     {
                         window: {

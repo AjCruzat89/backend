@@ -47,7 +47,7 @@ exports.currentWindow = async (req, res) => {
                 window: req.staffWindow,
                 status: 'pending',
                 [Op.and]: [
-                    literal("DATE(CONVERT_TZ(createdAt, '+00:00', '+08:00')) = CURDATE()")
+                    literal('DATE(`Queue`.`createdAt`) = CURDATE()')
                 ]
             },
             order: [['updatedAt', 'ASC']]
