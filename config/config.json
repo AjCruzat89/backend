@@ -1,9 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
+    "username": "avnadmin",
+    "password": "AVNS__1Lkg1M_IlxIRwyiktq",
     "database": "database_development",
-    "host": "127.0.0.1",
+    "host": "mysql-38215f5b-angelouy89.j.aivencloud.com",
+    "port": 27294,
     "dialect": "mysql",
     "timezone": "+08:00"
   },
