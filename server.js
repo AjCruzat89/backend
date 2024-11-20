@@ -7,8 +7,8 @@ const PORT = 3000;
 //<!--===============================================================================================-->
 const app = express();
 app.use(cors({
-    origin: '*', 
-    methods: '*',  
+    origin: '*',
+    methods: '*',
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: false,
 }));
@@ -19,8 +19,9 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: '*',
-        methods: ['GET', 'POST'],
-        allowedHeaders: ['Content-Type']
+        methods: '*',
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: false,
     }
 });
 app.use((req, res, next) => {
