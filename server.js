@@ -30,6 +30,12 @@ app.use((req, res, next) => {
 });
 io.on('connection', (socket) => {
     console.log(`${socket.id} connected`);
+
+    socket.on('call', (msg, callback) => {
+        io.emit('call', msg);
+        callback({ status: 'success' });
+    });
+    
     socket.on('disconnect', () => {
         console.log(`${socket.id} disconnected`);
     });
@@ -39,9 +45,9 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
 app.use('/queue', require('./routes/queueRoutes'));
 app.use('/staff', require('./routes/staffRoutes'));
-app.get('/test', (req, res) => {
-    res.send('TEST')
-})
+// app.get('/test', (req, res) => {
+//     res.send('TEST')
+// })
 //<!--===============================================================================================-->
 const db = require('./models');
 db.sequelize.authenticate()

@@ -1,7 +1,7 @@
 //<!--===============================================================================================-->
 const { Op, fn, col, literal, where } = require("sequelize");
 const db = require('../models');
-const { User, Window, ProcessType, Transaction } = db;
+const { User, Window, ProcessType, Transaction, Queue } = db;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'capstone_jwt';
@@ -304,7 +304,11 @@ exports.getTransactions = async (req, res) => {
             order: [[fn('YEAR', col('createdAt')), 'ASC']]
         });
 
-        const transactions = await Transaction.findAll();
+        const transactions = await Queue.findAll({
+            include: [{
+                model: Transaction,
+            }]
+        });
 
         res.status(200).json({ daily, weekly, monthly, yearly, transactions });
     } catch (err) {
