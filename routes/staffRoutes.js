@@ -11,6 +11,7 @@ router.post('/finish-queue', staffController.ensureStaff, staffController.finish
 router.get('/get-pending', staffController.ensureStaff, staffController.getPending);
 router.get('/get-transactions-by-id/:id', staffController.ensureStaff, staffController.getTransactionsById);
 router.post('/add-transaction', staffController.ensureStaff, staffController.addTransaction);
+router.post('/edit-transaction', staffController.ensureStaff, staffController.editTransaction);
 router.post('/delete-transaction', staffController.ensureStaff, staffController.deleteTransaction);
 //<!--===============================================================================================-->
 module.exports = router

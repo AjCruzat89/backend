@@ -177,8 +177,29 @@ exports.addTransaction = async (req, res) => {
             amount: req.body.amount,
             description: req.body.description
         });
-        req.io.emit('refreshQueue');
         res.status(200).json({ result });
+    }
+    catch(err){
+        if (err.errors) {
+            res.status(500).json({ error: err.errors.map(e => e.message) });
+        } else {
+            res.status(500).json({ error: err });
+        }
+    }
+}
+//<!--===============================================================================================-->
+exports.editTransaction = async (req, res) => {
+    try{   
+        const transaction = await Transaction.findOne({
+            where: {
+                id: req.body.id
+            }
+        });
+        if (!transaction) {
+            return res.status(404).json({ error: 'Transaction not found' });
+        }
+        const updatedTransaction = await transaction.update(req.body);
+        res.status(200).json({ message: 'Transaction updated successfully' });
     }
     catch(err){
         if (err.errors) {
@@ -196,7 +217,6 @@ exports.deleteTransaction = async (req, res) => {
                 id : req.body.id
             }
         });
-        req.io.emit('refreshQueue');
         res.status(200).json({ result });
     }
     catch(err){
