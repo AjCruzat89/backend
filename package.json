@@ -19,6 +19,7 @@
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
+    "mkcert": "^3.2.0",
     "mysql2": "^3.11.3",
     "nodemon": "^3.1.4",
     "path": "^0.12.7",

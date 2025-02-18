@@ -1,6 +1,7 @@
 //<!--===============================================================================================-->
 const express = require('express');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const PORT = 3000;
@@ -15,7 +16,10 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //<!--===============================================================================================-->
-const server = http.createServer(app);
+const privateKey = fs.readFileSync('./private.key', 'utf8'); 
+const certificate = fs.readFileSync('./certificate.crt', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+const server = https.createServer(credentials, app);
 const io = new Server(server, {
     cors: {
         origin: '*',
@@ -45,9 +49,6 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
 app.use('/queue', require('./routes/queueRoutes'));
 app.use('/staff', require('./routes/staffRoutes'));
-// app.get('/test', (req, res) => {
-//     res.send('TEST')
-// })
 //<!--===============================================================================================-->
 const db = require('./models');
 db.sequelize.authenticate()
